@@ -29,7 +29,7 @@ class Main extends React.Component {
             <div>
                 <h1>Header</h1>
                 {
-                    this.state.beers.map( (value) => {
+                    this.state.beers.map( function (value) {
                         return (<BeerItem key={value.id} beerInfo={value}/>)
                     })
                 }
