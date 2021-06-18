@@ -10,6 +10,7 @@ export function formValidation(fields) {
     return allFieldsFilled(fields)
 }
 
-export function fullNameValidation() {
-    return true
+export function fullNameValidation(text) {
+    return !(text === undefined || text.length < 1);
+
 }
