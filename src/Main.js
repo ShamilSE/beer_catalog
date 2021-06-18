@@ -1,5 +1,6 @@
 import React from 'react'
 import {BeerItem} from "./BeerItem";
+import {RegisterPopUp} from "./RegisterPopUp";
 
 class Main extends React.Component {
     constructor(props) {
@@ -7,6 +8,7 @@ class Main extends React.Component {
         this.state = {
             beers: [],
             error: null,
+            showRegisterForm: false,
         }
     }
 
@@ -24,10 +26,21 @@ class Main extends React.Component {
             )
     }
 
+    onRegisterPopUpButton() {
+        if (this.state.showRegisterForm)
+            this.setState({showRegisterForm: false})
+        else
+            this.setState({showRegisterForm: true})
+    }
+
+    closeRegisterForm() {this.setState({showRegisterForm: false})}
+
     render() {
         return (
             <div>
                 <h1>Header</h1>
+                {this.state.showRegisterForm ? <RegisterPopUp onClick={() => this.closeRegisterForm()} /> : null}
+                <button onClick={() => this.onRegisterPopUpButton()}>register</button>
                 {
                     this.state.beers.map( function (value) {
                         return (<BeerItem key={value.id} beerInfo={value}/>)

@@ -1,0 +1,5 @@
+birthday: undefined
+fullName: undefined
+password: undefined
+post: undefined
+username: undefined
