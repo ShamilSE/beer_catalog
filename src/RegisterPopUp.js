@@ -1,23 +1,14 @@
-import {React, useState} from "react";
-import {Modal, Button} from "react-bootstrap";
-import {passwordValidation, fullNameValidation} from "./utils/formValidation";
+import {React} from "react";
+import {Modal} from "react-bootstrap";
 import {useFormik} from "formik";
 
 function RegisterPopUp(props) {
-    const [fullName, setFullName] = useState("Enter full name")
-    const [birthday, setBirthday] = useState(undefined)
-    const [post, setPost] = useState(undefined)
-    const [username, setUserName] = useState(undefined)
-    const [password, setPassword] = useState(undefined)
-
-    const [isFullNameValid, setIsFullNameValid] = useState(false)
-    const [isPasswordValid, setIsPasswordValid] = useState(false)
-
     const formik = useFormik({
         initialValues: {
-            email: '',
-            fullName: '',
-            password: '',
+            fullName: null,
+            birthday: null,
+            password: null,
+            email: null,
         },
         validate: validate,
         onSubmit: values => {alert(JSON.stringify(values, null, 2))}
@@ -26,30 +17,14 @@ function RegisterPopUp(props) {
     function validate(values) {
         let errors = {}
         if (!values.email)
-            errors.email = 'Required';
+            errors.email = 'required'
+        if (!values.fullName)
+            errors.fullName = 'required'
+        if (!values.password)
+            errors.password = 'required'
+        if (values.password && values.password.length < 6)
+            errors.password = 'password must have at least 6 characters'
         return errors;
-    }
-
-    function sendForm(event) {
-        event.preventDefault()
-        alert("form has sent")
-        console.log(fullName)
-        console.log(birthday)
-        console.log(post)
-        console.log(username)
-        console.log(password)
-    }
-
-    function onFullNameInputChange(event) {
-        setFullName(event.target.value)
-        fullNameValidation(fullName) ? setIsFullNameValid(true) : setIsFullNameValid(false)
-        console.log("is full name valid? " + isFullNameValid)
-    }
-
-    function onPasswordInputChange(event) {
-        setPassword(event.target.value)
-        passwordValidation(password) ? setIsPasswordValid(true) : setIsPasswordValid(false)
-        console.log("is password valid? " + isPasswordValid)
     }
 
     return (
@@ -57,47 +32,20 @@ function RegisterPopUp(props) {
             <Modal.Header closeButton onClick={() => props.onClick()}>
                 <Modal.Title>Register Form</Modal.Title>
             </Modal.Header>
-            <form onSubmit={sendForm}>
-                <Modal.Body>
-                    <fieldset>
-                        <label>
-                            <p>full name</p>
-                            <input type="text" value={fullName} onChange={(event) => onFullNameInputChange(event)}/>
-                        </label>
-                        <label>
-                            <p>birthday</p>
-                            <input type="text" onChange={(event) => setBirthday(event.target.value)}/>
-                        </label>
-                        <label>
-                            <p>post</p>
-                            <input type="text" onChange={(event) => setPost(event.target.value)}/>
-                        </label>
-                        <label>
-                            <p>username</p>
-                            <input type="text" onChange={(event) => setUserName(event.target.value)}/>
-                        </label>
-                        <label>
-                            <p>password</p>
-                            <input type="password" value={password} onChange={(event) => onPasswordInputChange(event)}/>
-                        </label>
-                    </fieldset>
-                    <Modal.Footer>
-                            <Button variant="secondary">Close</Button>
-                            <Button variant="primary" type="submit" disabled>Register</Button>
-                    </Modal.Footer>
-                </Modal.Body>
-            </form>
             <form onSubmit={formik.handleSubmit}>
                 <label htmlFor="email">Email Address</label>
                 <input
+                    style={{display: 'inherit'}}
                     id="email"
                     name="email"
                     type="email"
                     onChange={formik.handleChange}
                     value={formik.values.email}
                 />
+                <p style={{color: 'red'}}>{formik.errors.email}</p>
                 <label htmlFor="fullName">Full name</label>
                 <input
+                    style={{display: 'inherit'}}
                     id="fullName"
                     name="fullName"
                     type="fullName"
@@ -105,14 +53,17 @@ function RegisterPopUp(props) {
                     onChange={formik.handleChange}
                     value={formik.values.fullName}
                 />
+                <p style={{color: 'red'}}>{formik.errors.fullName}</p>
+                <label htmlFor="password">Password</label>
                 <input
+                    style={{display: 'inherit'}}
                     id="password"
                     name="password"
                     type="password"
                     onChange={formik.handleChange}
                     value={formik.values.password}
                 />
-                {formik.errors.email}
+                <p style={{color: 'red'}}>{formik.errors.password}</p>
                 <button type="submit">Submit</button>
             </form>
         </Modal.Dialog>
