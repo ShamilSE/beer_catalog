@@ -1,15 +1,34 @@
 import {React, useState} from "react";
 import {Modal, Button} from "react-bootstrap";
-import { fullNameValidation} from "./utils/formValidation";
+import {passwordValidation, fullNameValidation} from "./utils/formValidation";
+import {useFormik} from "formik";
 
 function RegisterPopUp(props) {
-    const [fullName, setFullName] = useState()
-    const [birthday, setBirthday] = useState()
-    const [post, setPost] = useState()
-    const [username, setUserName] = useState()
-    const [password, setPassword] = useState()
+    const [fullName, setFullName] = useState("Enter full name")
+    const [birthday, setBirthday] = useState(undefined)
+    const [post, setPost] = useState(undefined)
+    const [username, setUserName] = useState(undefined)
+    const [password, setPassword] = useState(undefined)
 
     const [isFullNameValid, setIsFullNameValid] = useState(false)
+    const [isPasswordValid, setIsPasswordValid] = useState(false)
+
+    const formik = useFormik({
+        initialValues: {
+            email: '',
+            fullName: '',
+            password: '',
+        },
+        validate: validate,
+        onSubmit: values => {alert(JSON.stringify(values, null, 2))}
+    })
+
+    function validate(values) {
+        let errors = {}
+        if (!values.email)
+            errors.email = 'Required';
+        return errors;
+    }
 
     function sendForm(event) {
         event.preventDefault()
@@ -23,8 +42,14 @@ function RegisterPopUp(props) {
 
     function onFullNameInputChange(event) {
         setFullName(event.target.value)
-        fullNameValidation(event.target.value) ? setIsFullNameValid(true) : setIsFullNameValid(false)
-        console.log(isFullNameValid)
+        fullNameValidation(fullName) ? setIsFullNameValid(true) : setIsFullNameValid(false)
+        console.log("is full name valid? " + isFullNameValid)
+    }
+
+    function onPasswordInputChange(event) {
+        setPassword(event.target.value)
+        passwordValidation(password) ? setIsPasswordValid(true) : setIsPasswordValid(false)
+        console.log("is password valid? " + isPasswordValid)
     }
 
     return (
@@ -37,7 +62,7 @@ function RegisterPopUp(props) {
                     <fieldset>
                         <label>
                             <p>full name</p>
-                            <input type="text"  onChange={(event) => onFullNameInputChange(event)}/>
+                            <input type="text" value={fullName} onChange={(event) => onFullNameInputChange(event)}/>
                         </label>
                         <label>
                             <p>birthday</p>
@@ -53,7 +78,7 @@ function RegisterPopUp(props) {
                         </label>
                         <label>
                             <p>password</p>
-                            <input type="password" onChange={(event) => setPassword(event.target.value)}/>
+                            <input type="password" value={password} onChange={(event) => onPasswordInputChange(event)}/>
                         </label>
                     </fieldset>
                     <Modal.Footer>
@@ -61,6 +86,34 @@ function RegisterPopUp(props) {
                             <Button variant="primary" type="submit" disabled>Register</Button>
                     </Modal.Footer>
                 </Modal.Body>
+            </form>
+            <form onSubmit={formik.handleSubmit}>
+                <label htmlFor="email">Email Address</label>
+                <input
+                    id="email"
+                    name="email"
+                    type="email"
+                    onChange={formik.handleChange}
+                    value={formik.values.email}
+                />
+                <label htmlFor="fullName">Full name</label>
+                <input
+                    id="fullName"
+                    name="fullName"
+                    type="fullName"
+                    onBlur={formik.handleBlur}
+                    onChange={formik.handleChange}
+                    value={formik.values.fullName}
+                />
+                <input
+                    id="password"
+                    name="password"
+                    type="password"
+                    onChange={formik.handleChange}
+                    value={formik.values.password}
+                />
+                {formik.errors.email}
+                <button type="submit">Submit</button>
             </form>
         </Modal.Dialog>
     )

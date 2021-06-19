@@ -11,6 +11,9 @@ export function formValidation(fields) {
 }
 
 export function fullNameValidation(text) {
-    return !(text === undefined || text.length < 1);
+    return (text && text.length > 0)
+}
 
+export function passwordValidation(password) {
+    return (password && password.length >= 6)
 }

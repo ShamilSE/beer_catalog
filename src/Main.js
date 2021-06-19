@@ -41,11 +41,13 @@ class Main extends React.Component {
                 <h1>Header</h1>
                 {this.state.showRegisterForm ? <RegisterPopUp onClick={() => this.closeRegisterForm()} /> : null}
                 <button onClick={() => this.onRegisterPopUpButton()}>register</button>
-                {
-                    this.state.beers.map( function (value) {
-                        return (<BeerItem key={value.id} beerInfo={value}/>)
-                    })
-                }
+                <div style={{display: "flex", flexWrap: 'wrap'}}>
+                    {
+                        this.state.beers.map( function (value) {
+                            return (<BeerItem key={value.id} beerInfo={value}/>)
+                        })
+                    }
+                </div>
             </div>
         )
     }
