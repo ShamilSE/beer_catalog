@@ -11,11 +11,16 @@ function RegisterPopUp(props) {
             email: null,
         },
         validate: validate,
-        onSubmit: values => {alert(JSON.stringify(values, null, 2))}
+        onSubmit: values => {
+            alert(JSON.stringify(values, null, 2))
+            props.onClick()
+        }
     })
 
     function validate(values) {
         let errors = {}
+        if (!values.birthday)
+            errors.birthday = 'required'
         if (!values.email)
             errors.email = 'required'
         if (!values.fullName)
@@ -33,6 +38,25 @@ function RegisterPopUp(props) {
                 <Modal.Title>Register Form</Modal.Title>
             </Modal.Header>
             <form onSubmit={formik.handleSubmit}>
+                <label htmlFor="fullName">Full name</label>
+                <input
+                    style={{display: 'inherit'}}
+                    id="fullName"
+                    name="fullName"
+                    type="fullName"
+                    onChange={formik.handleChange}
+                    value={formik.values.fullName}
+                />
+                <p style={{color: 'red'}}>{formik.errors.fullName}</p>
+                <label htmlFor="birthday">birthday</label>
+                <input
+                    style={{display: "inherit"}}
+                    id="birthday"
+                    name="birthday"
+                    type="birthday"
+                    onChange={formik.handleChange}
+                    value={formik.values.birthday}
+                />
                 <label htmlFor="email">Email Address</label>
                 <input
                     style={{display: 'inherit'}}
@@ -43,17 +67,6 @@ function RegisterPopUp(props) {
                     value={formik.values.email}
                 />
                 <p style={{color: 'red'}}>{formik.errors.email}</p>
-                <label htmlFor="fullName">Full name</label>
-                <input
-                    style={{display: 'inherit'}}
-                    id="fullName"
-                    name="fullName"
-                    type="fullName"
-                    onBlur={formik.handleBlur}
-                    onChange={formik.handleChange}
-                    value={formik.values.fullName}
-                />
-                <p style={{color: 'red'}}>{formik.errors.fullName}</p>
                 <label htmlFor="password">Password</label>
                 <input
                     style={{display: 'inherit'}}

@@ -9,21 +9,46 @@ class Main extends React.Component {
             beers: [],
             error: null,
             showRegisterForm: false,
+            currentPage: 1,
+        }
+    }
+
+    queryBeer(direction) {
+        const per_page = 5
+        let nextPage
+        if (direction === 'next')
+            nextPage = this.state.currentPage + 1
+        else if (direction === 'prev') {
+            nextPage = this.state.currentPage - 1
+            console.log('prev')
+        }
+        else
+            nextPage = this.state.currentPage
+
+        if ((direction === 'prev' && nextPage >= 1) || (direction === 'next') || (direction === 'curr')) {
+            fetch(`https://api.punkapi.com/v2/beers?page=${nextPage}&per_page=${per_page}`)
+                .then(res => res.json())
+                .then(res => {
+                        const beers = []
+                        res.forEach((value) => {
+                            beers.push(value)
+                        })
+                        this.setState({beers})
+                    },
+                    (error) => {
+                        this.setState({error})
+                    })
+            let currentPage = 1
+            if (direction === 'next')
+                currentPage = this.state.currentPage + 1
+            else if (direction === 'prev')
+                currentPage = this.state.currentPage - 1
+            this.setState({currentPage})
         }
     }
 
     componentDidMount() {
-        fetch("https://api.punkapi.com/v2/beers", {method: 'GET'})
-            .then((res) => res.json())
-            .then((res) => {
-                    const beers = this.state.beers.slice()
-                    res.forEach((value) => {
-                        beers.push(value)
-                    })
-                    this.setState({beers})
-                },
-                (error) => {this.setState({error})}
-            )
+        this.queryBeer('curr')
     }
 
     onRegisterPopUpButton() {
@@ -48,6 +73,8 @@ class Main extends React.Component {
                         })
                     }
                 </div>
+                <button onClick={() => this.queryBeer('prev')}>previous</button>
+                <button onClick={() => this.queryBeer('next')}>next</button>
             </div>
         )
     }
