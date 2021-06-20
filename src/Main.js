@@ -10,18 +10,18 @@ class Main extends React.Component {
             error: null,
             showRegisterForm: false,
             currentPage: 1,
+            allBeer: [],
+            searchInput: null
         }
     }
 
-    queryBeer(direction) {
+    queryPage(direction) {
         const per_page = 5
         let nextPage
         if (direction === 'next')
             nextPage = this.state.currentPage + 1
-        else if (direction === 'prev') {
+        else if (direction === 'prev')
             nextPage = this.state.currentPage - 1
-            console.log('prev')
-        }
         else
             nextPage = this.state.currentPage
 
@@ -47,8 +47,25 @@ class Main extends React.Component {
         }
     }
 
+    async queryAll() {
+        for (let index = 1; index <= 5; index++) {
+            fetch(`https://api.punkapi.com/v2/beers?page=${index}&per_page=80`)
+                .then(res => res.json())
+                .then(res => {
+                        let allBeer = this.state.allBeer
+                        res.forEach((value) => {
+                            allBeer.push(value)
+                            this.setState({allBeer})
+                        })
+                    },
+                    (error) => {
+                        this.setState({error})
+                    })
+        }
+    }
+
     componentDidMount() {
-        this.queryBeer('curr')
+        this.queryPage('curr')
     }
 
     onRegisterPopUpButton() {
@@ -60,11 +77,16 @@ class Main extends React.Component {
 
     closeRegisterForm() {this.setState({showRegisterForm: false})}
 
+    logAllBeer() {
+        console.log(this.state.allBeer)
+    }
+
     render() {
         return (
             <div>
-                <h1>Header</h1>
+                <h1>Beer catalog app</h1>
                 {this.state.showRegisterForm ? <RegisterPopUp onClick={() => this.closeRegisterForm()} /> : null}
+                <input value={this.state.searchInput}/>
                 <button onClick={() => this.onRegisterPopUpButton()}>register</button>
                 <div style={{display: "flex", flexWrap: 'wrap'}}>
                     {
@@ -73,8 +95,10 @@ class Main extends React.Component {
                         })
                     }
                 </div>
-                <button onClick={() => this.queryBeer('prev')}>previous</button>
-                <button onClick={() => this.queryBeer('next')}>next</button>
+                <button onClick={() => this.queryPage('prev')}>previous</button>
+                <button onClick={() => this.queryPage('next')}>next</button>
+                <button onClick={() => this.queryAll()}>query all</button>
+                <button onClick={() => this.logAllBeer()}>show all beer</button>
             </div>
         )
     }
