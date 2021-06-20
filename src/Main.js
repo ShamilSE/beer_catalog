@@ -7,16 +7,17 @@ class Main extends React.Component {
         super(props)
         this.state = {
             beers: [],
+            showPerPage: 5,
             error: null,
             showRegisterForm: false,
             currentPage: 1,
             allBeer: [],
-            searchInput: null
+            searchInput: '',
         }
     }
 
     queryPage(direction) {
-        const per_page = 5
+        const per_page = this.state.showPerPage
         let nextPage
         if (direction === 'next')
             nextPage = this.state.currentPage + 1
@@ -47,25 +48,24 @@ class Main extends React.Component {
         }
     }
 
-    async queryAll() {
+    queryAll() {
         for (let index = 1; index <= 5; index++) {
             fetch(`https://api.punkapi.com/v2/beers?page=${index}&per_page=80`)
                 .then(res => res.json())
                 .then(res => {
-                        let allBeer = this.state.allBeer
-                        res.forEach((value) => {
-                            allBeer.push(value)
-                            this.setState({allBeer})
-                        })
-                    },
-                    (error) => {
-                        this.setState({error})
+                    let allBeer = this.state.allBeer
+                    res.forEach((value) => {
+                        allBeer.push(value)
+                        this.setState({allBeer})
                     })
-        }
+                }, (error) => {
+                    this.setState({error})
+                })}
     }
 
     componentDidMount() {
         this.queryPage('curr')
+        this.queryAll()
     }
 
     onRegisterPopUpButton() {
@@ -77,8 +77,13 @@ class Main extends React.Component {
 
     closeRegisterForm() {this.setState({showRegisterForm: false})}
 
-    logAllBeer() {
-        console.log(this.state.allBeer)
+    handleSearch(event) {
+        let allBeer = this.state.allBeer
+        let beers = allBeer.filter(el => {
+            return !el.name.toLowerCase().indexOf(event.target.value.toLowerCase())
+        })
+        beers.splice(5, beers.length)
+        this.setState({beers, searchInput: event.target.value})
     }
 
     render() {
@@ -86,7 +91,11 @@ class Main extends React.Component {
             <div>
                 <h1>Beer catalog app</h1>
                 {this.state.showRegisterForm ? <RegisterPopUp onClick={() => this.closeRegisterForm()} /> : null}
-                <input value={this.state.searchInput}/>
+                <input
+                    style={{display: 'inherit'}}
+                    value={this.state.searchInput}
+                    onChange={(event) => this.handleSearch(event)}
+                />
                 <button onClick={() => this.onRegisterPopUpButton()}>register</button>
                 <div style={{display: "flex", flexWrap: 'wrap'}}>
                     {
@@ -97,8 +106,6 @@ class Main extends React.Component {
                 </div>
                 <button onClick={() => this.queryPage('prev')}>previous</button>
                 <button onClick={() => this.queryPage('next')}>next</button>
-                <button onClick={() => this.queryAll()}>query all</button>
-                <button onClick={() => this.logAllBeer()}>show all beer</button>
             </div>
         )
     }
