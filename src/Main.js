@@ -13,11 +13,12 @@ class Main extends React.Component {
             currentPage: 1,
             allBeer: [],
             searchInput: '',
+            beerPerPage: 5,
         }
     }
 
     queryPage(direction) {
-        const per_page = this.state.showPerPage
+        const per_page = this.state.beerPerPage
         let nextPage
         if (direction === 'next')
             nextPage = this.state.currentPage + 1
@@ -78,12 +79,19 @@ class Main extends React.Component {
     closeRegisterForm() {this.setState({showRegisterForm: false})}
 
     handleSearch(event) {
-        let allBeer = this.state.allBeer
-        let beers = allBeer.filter(el => {
-            return !el.name.toLowerCase().indexOf(event.target.value.toLowerCase())
-        })
-        beers.splice(5, beers.length)
-        this.setState({beers, searchInput: event.target.value})
+        if (event.target.value.length > 0) {
+            let allBeer = this.state.allBeer
+            let beers = allBeer.filter(el => {
+                return !el.name.toLowerCase().indexOf(event.target.value.toLowerCase())
+            })
+            beers.splice(5, beers.length)
+            this.setState({beers, searchInput: event.target.value})
+        }
+        else {
+            let beers = JSON.parse(JSON.stringify(this.state.allBeer))
+            beers.splice(5, this.state.allBeer.length)
+            this.setState({beers, searchInput: ''})
+        }
     }
 
     render() {
