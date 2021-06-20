@@ -11,12 +11,13 @@ class Main extends React.Component {
             showRegisterForm: false,
             currentPage: 1,
             allBeer: [],
-            searchInput: null
+            searchInput: '',
+            beerPerPage: 5,
         }
     }
 
     queryPage(direction) {
-        const per_page = 5
+        const per_page = this.state.beerPerPage
         let nextPage
         if (direction === 'next')
             nextPage = this.state.currentPage + 1
@@ -47,7 +48,7 @@ class Main extends React.Component {
         }
     }
 
-    async queryAll() {
+    queryAll() {
         for (let index = 1; index <= 5; index++) {
             fetch(`https://api.punkapi.com/v2/beers?page=${index}&per_page=80`)
                 .then(res => res.json())
@@ -66,6 +67,7 @@ class Main extends React.Component {
 
     componentDidMount() {
         this.queryPage('curr')
+        this.queryAll()
     }
 
     onRegisterPopUpButton() {
@@ -77,16 +79,30 @@ class Main extends React.Component {
 
     closeRegisterForm() {this.setState({showRegisterForm: false})}
 
-    logAllBeer() {
-        console.log(this.state.allBeer)
-    }
+    // handleSearch(event) {
+    //     this.setState({searchInput: event.target.value})
+    //     let filtered = this.state.allBeer.filter((beer) => {
+    //         return beer.name.indexOf(this.state.searchInput)
+    //     })
+    //     if (this.state.searchInput.length > 0 && filtered.length >= 5) {
+    //         filtered.splice(5, filtered.length)
+    //         this.setState({beers: filtered})
+    //     }
+    //     else if (this.state.searchInput.length === 0) {
+    //         let beers = this.state.beers.splice(5, this.state.beers.length)
+    //         this.setState({beers})
+    //     }
+    // }
 
     render() {
         return (
             <div>
                 <h1>Beer catalog app</h1>
                 {this.state.showRegisterForm ? <RegisterPopUp onClick={() => this.closeRegisterForm()} /> : null}
-                <input value={this.state.searchInput}/>
+                {/*<input*/}
+                {/*    style={{display: "inherit"}}*/}
+                {/*    value={this.state.searchInput}*/}
+                {/*    onChange={(event) => this.handleSearch(event)}/>*/}
                 <button onClick={() => this.onRegisterPopUpButton()}>register</button>
                 <div style={{display: "flex", flexWrap: 'wrap'}}>
                     {
@@ -97,8 +113,6 @@ class Main extends React.Component {
                 </div>
                 <button onClick={() => this.queryPage('prev')}>previous</button>
                 <button onClick={() => this.queryPage('next')}>next</button>
-                <button onClick={() => this.queryAll()}>query all</button>
-                <button onClick={() => this.logAllBeer()}>show all beer</button>
             </div>
         )
     }
