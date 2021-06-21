@@ -94,9 +94,17 @@ class Main extends React.Component {
         }
     }
 
+    closePopUpFromOuterSpace(event) {
+        if (event.target.className !== 'registerButton'
+            && event.target.parentElement.className !== 'register-form'
+            && event.target.className !== 'register-form'
+            && this.state.showRegisterForm)
+            this.closeRegisterForm()
+    }
+
     render() {
         return (
-            <div>
+            <div className={"main-div"} onClick={(event) => this.closePopUpFromOuterSpace(event)}>
                 <h1>Beer catalog app</h1>
                 {this.state.showRegisterForm ? <RegisterPopUp onClick={() => this.closeRegisterForm()} /> : null}
                 <input
@@ -104,7 +112,7 @@ class Main extends React.Component {
                     value={this.state.searchInput}
                     onChange={(event) => this.handleSearch(event)}
                 />
-                <button onClick={() => this.onRegisterPopUpButton()}>register</button>
+                <button onClick={() => this.onRegisterPopUpButton()} className={'registerButton'}>register</button>
                 <div style={{display: "flex", flexWrap: 'wrap'}}>
                     {
                         this.state.beers.map( function (value) {

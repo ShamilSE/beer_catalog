@@ -5,10 +5,10 @@ import {useFormik} from "formik";
 function RegisterPopUp(props) {
     const formik = useFormik({
         initialValues: {
-            fullName: null,
-            birthday: null,
-            password: null,
-            email: null,
+            fullName: '',
+            birthday: '',
+            password: '',
+            email: '',
         },
         validate: validate,
         onSubmit: values => {
@@ -33,11 +33,11 @@ function RegisterPopUp(props) {
     }
 
     return (
-        <Modal.Dialog>
+        <Modal.Dialog className={"register-form"}>
             <Modal.Header closeButton onClick={() => props.onClick()}>
                 <Modal.Title>Register Form</Modal.Title>
             </Modal.Header>
-            <form onSubmit={formik.handleSubmit}>
+            <form onSubmit={formik.handleSubmit} className={"register-form"}>
                 <label htmlFor="fullName">Full name</label>
                 <input
                     style={{display: 'inherit'}}
