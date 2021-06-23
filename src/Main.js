@@ -1,6 +1,7 @@
 import React from 'react'
 import {BeerItem} from "./BeerItem";
 import {RegisterPopUp} from "./RegisterPopUp";
+import {Navbar} from "./Navbar";
 
 class Main extends React.Component {
     constructor(props) {
@@ -104,14 +105,12 @@ class Main extends React.Component {
 
     render() {
         return (
-            <div className={"main-div"} onClick={(event) => this.closePopUpFromOuterSpace(event)}>
-                <h1>Beer catalog app</h1>
-                {this.state.showRegisterForm ? <RegisterPopUp onClick={() => this.closeRegisterForm()} /> : null}
-                <input
-                    style={{display: 'inherit'}}
+            <div className={"main-div"}>
+                <Navbar
                     value={this.state.searchInput}
                     onChange={(event) => this.handleSearch(event)}
                 />
+                {this.state.showRegisterForm ? <RegisterPopUp onClick={() => this.closeRegisterForm()} /> : null}
                 <button onClick={() => this.onRegisterPopUpButton()} className={'registerButton'}>register</button>
                 <div style={{display: "flex", flexWrap: 'wrap'}}>
                     {
@@ -120,8 +119,12 @@ class Main extends React.Component {
                         })
                     }
                 </div>
-                <button onClick={() => this.queryPage('prev')}>previous</button>
-                <button onClick={() => this.queryPage('next')}>next</button>
+                <nav aria-label="Page navigation example">
+                    <ul className="pagination">
+                        <li onClick={() => this.queryPage('prev')} className="page-item"><a className="page-link">Previous</a></li>
+                        <li onClick={() => this.queryPage('next')} className="page-item"><a className="page-link">Next</a></li>
+                    </ul>
+                </nav>
             </div>
         )
     }

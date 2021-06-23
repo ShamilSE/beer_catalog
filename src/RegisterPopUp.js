@@ -34,49 +34,64 @@ function RegisterPopUp(props) {
 
     return (
         <Modal.Dialog className={"register-form"}>
-            <Modal.Header closeButton onClick={() => props.onClick()}>
+            <Modal.Header closeButton>
                 <Modal.Title>Register Form</Modal.Title>
             </Modal.Header>
+
             <form onSubmit={formik.handleSubmit} className={"register-form"}>
-                <label htmlFor="fullName">Full name</label>
-                <input
-                    style={{display: 'inherit'}}
-                    id="fullName"
-                    name="fullName"
-                    type="fullName"
-                    onChange={formik.handleChange}
-                    value={formik.values.fullName}
-                />
-                <p style={{color: 'red'}}>{formik.errors.fullName}</p>
-                <label htmlFor="birthday">birthday</label>
-                <input
-                    style={{display: "inherit"}}
-                    id="birthday"
-                    name="birthday"
-                    type="birthday"
-                    onChange={formik.handleChange}
-                    value={formik.values.birthday}
-                />
-                <label htmlFor="email">Email Address</label>
-                <input
-                    style={{display: 'inherit'}}
-                    id="email"
-                    name="email"
-                    type="email"
-                    onChange={formik.handleChange}
-                    value={formik.values.email}
-                />
-                <p style={{color: 'red'}}>{formik.errors.email}</p>
-                <label htmlFor="password">Password</label>
-                <input
-                    style={{display: 'inherit'}}
-                    id="password"
-                    name="password"
-                    type="password"
-                    onChange={formik.handleChange}
-                    value={formik.values.password}
-                />
-                <p style={{color: 'red'}}>{formik.errors.password}</p>
+
+                <div className="mb-3">
+                    <label htmlFor="fullName" className="form-label">Full name</label>
+                    <input
+                        className="form-control"
+                        id="fullName"
+                        name="fullName"
+                        type="fullName"
+                        onChange={formik.handleChange}
+                        value={formik.values.fullName}
+                    />
+                    <p style={{color: 'red'}}>{formik.errors.fullName}</p>
+                </div>
+
+                <div className="mb-3">
+                    <label htmlFor="birthday" className="form-label">Birthday</label>
+                    <input
+                        className="form-control"
+                        id="birthday"
+                        name="birthday"
+                        type="birthday"
+                        onChange={formik.handleChange}
+                        value={formik.values.birthday}
+                    />
+                    <p style={{color: 'red'}}>{formik.errors.birthday}</p>
+                </div>
+
+                <div className="mb-3">
+                    <label htmlFor="email" className="form-label">Email Address</label>
+                    <input
+                        className="form-control"
+                        id="email"
+                        name="email"
+                        type="email"
+                        onChange={formik.handleChange}
+                        value={formik.values.email}
+                    />
+                    <p style={{color: 'red'}}>{formik.errors.email}</p>
+                </div>
+
+                <div className="mb-3">
+                    <label htmlFor="password" className="form-label">Password</label>
+                    <input
+                        className="form-control"
+                        id="password"
+                        name="password"
+                        type="password"
+                        onChange={formik.handleChange}
+                        value={formik.values.password}
+                    />
+                    <p style={{color: 'red'}}>{formik.errors.password}</p>
+                </div>
+                
                 <button type="submit">Submit</button>
             </form>
         </Modal.Dialog>
