@@ -40,7 +40,6 @@ function RegisterPopUp(props) {
 
             <form onSubmit={formik.handleSubmit} className={"register-form"}>
 
-                <div className="mb-3">
                     <label htmlFor="fullName" className="form-label">Full name</label>
                     <input
                         className="form-control"
@@ -51,9 +50,7 @@ function RegisterPopUp(props) {
                         value={formik.values.fullName}
                     />
                     <p style={{color: 'red'}}>{formik.errors.fullName}</p>
-                </div>
 
-                <div className="mb-3">
                     <label htmlFor="birthday" className="form-label">Birthday</label>
                     <input
                         className="form-control"
@@ -64,9 +61,7 @@ function RegisterPopUp(props) {
                         value={formik.values.birthday}
                     />
                     <p style={{color: 'red'}}>{formik.errors.birthday}</p>
-                </div>
 
-                <div className="mb-3">
                     <label htmlFor="email" className="form-label">Email Address</label>
                     <input
                         className="form-control"
@@ -77,9 +72,7 @@ function RegisterPopUp(props) {
                         value={formik.values.email}
                     />
                     <p style={{color: 'red'}}>{formik.errors.email}</p>
-                </div>
 
-                <div className="mb-3">
                     <label htmlFor="password" className="form-label">Password</label>
                     <input
                         className="form-control"
@@ -90,8 +83,7 @@ function RegisterPopUp(props) {
                         value={formik.values.password}
                     />
                     <p style={{color: 'red'}}>{formik.errors.password}</p>
-                </div>
-                
+
                 <button type="submit">Submit</button>
             </form>
         </Modal.Dialog>

@@ -105,21 +105,21 @@ class Main extends React.Component {
 
     render() {
         return (
-            <div className={"main-div"}>
+            <div className={"main-div"} onClick={(event) => this.closePopUpFromOuterSpace(event)}>
                 <Navbar
                     value={this.state.searchInput}
                     onChange={(event) => this.handleSearch(event)}
+                    onRegisterButtonClick={() => this.onRegisterPopUpButton()}
                 />
                 {this.state.showRegisterForm ? <RegisterPopUp onClick={() => this.closeRegisterForm()} /> : null}
-                <button onClick={() => this.onRegisterPopUpButton()} className={'registerButton'}>register</button>
-                <div style={{display: "flex", flexWrap: 'wrap'}}>
+                <div style={{display: "flex", flexWrap: 'wrap', justifyContent: "space-around"}}>
                     {
                         this.state.beers.map( function (value) {
                             return (<BeerItem key={value.id} beerInfo={value}/>)
                         })
                     }
                 </div>
-                <nav aria-label="Page navigation example">
+                <nav>
                     <ul className="pagination">
                         <li onClick={() => this.queryPage('prev')} className="page-item"><a className="page-link">Previous</a></li>
                         <li onClick={() => this.queryPage('next')} className="page-item"><a className="page-link">Next</a></li>
